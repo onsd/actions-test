@@ -1,0 +1,37 @@
+name: Go
+on: [push, pull_request]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up Go 1.13
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.13
+      id: go
+
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
+    - name: Get dependencies
+      run: |
+        cd server
+        mkdir statik
+        cat <<EOS  >> statik/statik.go
+        package statik
+        import "github.com/rakyll/statik/fs"
+        func init() {
+          fs.Register("")
+        }
+        EOS
+        go mod download
+    - name: Build
+      run: |
+        cd server
+        go build -v .
+    - name: Test
+      run: |
+        cd server
+        go test
