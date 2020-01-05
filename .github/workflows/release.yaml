@@ -49,12 +49,13 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
     - name: Get dependencies
+      env:
+        GO111MODULE: on
+        GOPATH: /home/runner/work/
       run: |
-        mkdir bin
-        GOBIN=$(pwd)/bin
         go get github.com/rakyll/statik
         cd server
-        $GOBIN/statik --src ../client/dist
+        $GOPATH/bin/statik --src ../client/dist
     
     - name: Download Client artifact
       uses: actions/download-artifact@v1
