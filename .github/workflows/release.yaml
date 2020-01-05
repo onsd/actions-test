@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: yarn install, build, and test
+      - name: yarn install, and build
         run: |
           cd client
           yarn install
@@ -56,12 +56,12 @@ jobs:
     - name: Get dependencies
       run: |
         # go install github.com/rakyll/statik
-        go get github.com/rakyll/statik
+        GO111MODULE=off GOBIN=$(pwd)/bin go get github.com/rakyll/statik
         cd server
         bin/statik --src ../client/dist
     - name: Build
       run: |
-        cd server
+        GO111MODULE=on cd server
         go build -v .
     - name: Test
       run: |
