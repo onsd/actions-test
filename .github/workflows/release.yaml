@@ -23,18 +23,18 @@ jobs:
         with:
           name: client
           path: client/dist
-      - run: cd client
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: build # will run `yarn build` command
-      - name: upload artifact
-        uses: actions/upload-artifact@v1
-        with:
-          name: binary
-          path: server
+      # - run: cd client
+      # - uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: install # will run `yarn install` command
+      # - uses: borales/actions-yarn@v2.0.0
+      #   with:
+      #     cmd: build # will run `yarn build` command
+      # - name: upload artifact
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: binary
+      #     path: server
 
   build-server:
     name: Build-server
