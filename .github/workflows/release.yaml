@@ -57,6 +57,7 @@ jobs:
   
   release:
     runs-on: ${{ matrix.os }}
+    needs: build-server
     strategy:
       fail-fast: false
       matrix:
@@ -78,9 +79,9 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: server
-          path: server
+          path: ./
       - name: GoReleaser
-        uses: server/
+        uses: goreleaser/goreleaser-action@v1
         with:
           version: ${{ matrix.version }}
           args: release --skip-publish --rm-dist
