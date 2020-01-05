@@ -16,7 +16,6 @@ jobs:
           cd client
           yarn install
           yarn build:stage 
-          yarn test
       - name: Archive production artifacts
         uses: actions/upload-artifact@v1
         with:
