@@ -68,8 +68,8 @@ jobs:
           - latest
           - v0.117.0
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      # - name: Checkout
+      #   uses: actions/checkout@v1
       - name: Set up Go
         uses: actions/setup-go@v1
         with:
@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: server
-          path: ./
+          path: server
       - name: GoReleaser
         uses: goreleaser/goreleaser-action@v1
         env:
@@ -87,4 +87,5 @@ jobs:
           version: ${{ matrix.version }}
           args: release --rm-dist
           key: ${{ secrets.YOUR_PRIVATE_KEY }}
+          workdir: server
 
