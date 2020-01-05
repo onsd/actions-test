@@ -48,9 +48,9 @@ jobs:
       id: go
     - name: Get dependencies
       run: |
-        # go install github.com/rakyll/statik
         mkdir bin
-        GOBIN=$(pwd)/bin go get github.com/rakyll/statik
+        GOBIN=$(pwd)/bin
+        go get github.com/rakyll/statik
         cd server
         $GOBIN/statik --src ../client/dist
     - name: Check out code into the Go module directory
