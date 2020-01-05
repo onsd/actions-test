@@ -78,7 +78,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: server
-          path: ./
+          path: server
       - name: GoReleaser
         uses: goreleaser/goreleaser-action@v1
         env:
@@ -87,5 +87,5 @@ jobs:
           version: ${{ matrix.version }}
           args: release --skip-publish --rm-dist
           key: ${{ secrets.YOUR_PRIVATE_KEY }}
-
+          path: server
 
