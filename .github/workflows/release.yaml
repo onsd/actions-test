@@ -55,9 +55,10 @@ jobs:
         path: client/dist
     - name: Get dependencies
       run: |
-        go install github.com/rakyll/statik
+        # go install github.com/rakyll/statik
+        go get github.com/rakyll/statik
         cd server
-        statik --src ../client/dist
+        bin/statik --src ../client/dist
     - name: Build
       run: |
         cd server
