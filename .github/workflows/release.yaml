@@ -39,7 +39,7 @@ jobs:
   build-server:
     name: Build-server
     runs-on: ubuntu-latest
-    needs: build-client
+    # needs: build-client
     steps:
     - name: Set up Go 1.13
       uses: actions/setup-go@v1
