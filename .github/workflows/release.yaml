@@ -8,33 +8,33 @@ on:
       - master
 
 jobs:
-  build-client:
-    name: Build-Client
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: yarn install, and build
-        run: |
-          cd client
-          yarn install
-          yarn build:stage 
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          name: client
-          path: client/dist
-      # - run: cd client
-      # - uses: borales/actions-yarn@v2.0.0
-      #   with:
-      #     cmd: install # will run `yarn install` command
-      # - uses: borales/actions-yarn@v2.0.0
-      #   with:
-      #     cmd: build # will run `yarn build` command
-      # - name: upload artifact
-      #   uses: actions/upload-artifact@v1
-      #   with:
-      #     name: binary
-      #     path: server
+  # build-client:
+  #   name: Build-Client
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v1
+  #     - name: yarn install, and build
+  #       run: |
+  #         cd client
+  #         yarn install
+  #         yarn build:stage 
+  #     - name: Archive production artifacts
+  #       uses: actions/upload-artifact@v1
+  #       with:
+  #         name: client
+  #         path: client/dist
+  #     # - run: cd client
+  #     # - uses: borales/actions-yarn@v2.0.0
+  #     #   with:
+  #     #     cmd: install # will run `yarn install` command
+  #     # - uses: borales/actions-yarn@v2.0.0
+  #     #   with:
+  #     #     cmd: build # will run `yarn build` command
+  #     # - name: upload artifact
+  #     #   uses: actions/upload-artifact@v1
+  #     #   with:
+  #     #     name: binary
+  #     #     path: server
 
   build-server:
     name: Build-server
@@ -49,9 +49,10 @@ jobs:
     - name: Get dependencies
       run: |
         # go install github.com/rakyll/statik
-        GOBIN=$GOPATH/bin go get github.com/rakyll/statik
+        mkdir bin
+        GOBIN=$(pwd)/bin go get github.com/rakyll/statik
         cd server
-        $GOPATH/bin/statik --src ../client/dist
+        $GOBIN/statik --src ../client/dist
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
     - name: Download Client artifact
