@@ -46,6 +46,12 @@ jobs:
       with:
         go-version: 1.13
       id: go
+    - name: Get dependencies
+      run: |
+        # go install github.com/rakyll/statik
+        GOBIN=$GOPATH/bin go get github.com/rakyll/statik
+        cd server
+        $GOPATH/bin/statik --src ../client/dist
     - name: Check out code into the Go module directory
       uses: actions/checkout@v1
     - name: Download Client artifact
@@ -53,12 +59,12 @@ jobs:
       with:
         name: client
         path: client/dist
-    - name: Get dependencies
-      run: |
-        # go install github.com/rakyll/statik
-        GO111MODULE=off GOBIN=$(pwd)/bin go get github.com/rakyll/statik
-        cd server
-        bin/statik --src ../client/dist
+    # - name: Get dependencies
+    #   run: |
+    #     # go install github.com/rakyll/statik
+    #     GO111MODULE=off GOBIN=$(pwd)/bin go get github.com/rakyll/statik
+        # cd server
+        # bin/statik --src ../client/dist
     - name: Build
       run: |
         GO111MODULE=on cd server
