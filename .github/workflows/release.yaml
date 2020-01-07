@@ -2,8 +2,10 @@ name: release binary
 
 on:
   push:
-    tags:
-      - v*.*.*
+    # tags:
+    #   - v*.*.*
+    branches:
+      - master
 
 
 jobs:
@@ -69,13 +71,21 @@ jobs:
         with:
           name: server
           path: server
-      - name: GoReleaser
-        uses: goreleaser/goreleaser-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: GoReleaser
+      #   uses: goreleaser/goreleaser-action@v1
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   with:
+      #     version: latest
+      #     args: release --rm-dist
+      #     key: ${{ secrets.YOUR_PRIVATE_KEY }}
+      #     workdir: server
+      - name: test
         with:
-          version: latest
-          args: release --rm-dist
-          key: ${{ secrets.YOUR_PRIVATE_KEY }}
-          workdir: server
+          path: server
+        run: |
+          go get github.com/laher/goxc
+          $GOPATH/bin/goxc
+          tree dist
+          
 
