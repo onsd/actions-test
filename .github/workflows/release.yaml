@@ -97,6 +97,7 @@ jobs:
         uses: JasonEtco/upload-to-release@master
         with:
           args: reverse-proxy-${{ matrix.os }}.tar.gz
+          path: server
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
