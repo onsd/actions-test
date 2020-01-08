@@ -84,10 +84,12 @@ jobs:
       #     key: ${{ secrets.YOUR_PRIVATE_KEY }}
       #     workdir: server
       - name: test
-        with:
-          path: server
+        # with:
+        #   path: server
+        env:
+          CGO_ENABLED: 1
         run: |
-          CGO_ENABLED=1
+          cd server
           go build
           tar zcvf reverse-proxy-${{ matrix.os }}.tar.gz main
 
