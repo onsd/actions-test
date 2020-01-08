@@ -65,6 +65,17 @@ jobs:
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
+    - name: Get url to upload to release from output
+      env:
+        url: ${{ steps.create_release.outputs.upload_url }}
+      run: |
+        mkdir artifact
+        echo $url > artifact/url.txt
+    - name: Upload artifact to share url with other jobs
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifact
+        path: artifact/url.txt
   
   release:
     needs: build-server
@@ -84,31 +95,31 @@ jobs:
         with:
           name: server
           path: server
-      # - name: GoReleaser
-      #   uses: goreleaser/goreleaser-action@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   with:
-      #     version: latest
-      #     args: release --rm-dist
-      #     key: ${{ secrets.YOUR_PRIVATE_KEY }}
-      #     workdir: server
       - name: build server
-        # with:
-        #   path: server
         env:
           CGO_ENABLED: 1
         run: |
           cd server
           go build
           tar zcvf ../reverse-proxy-${{ matrix.os }}.tar.gz main
+
+      - name: Download artifact to get url to upload to release
+        uses: actions/download-artifact@v1
+        with:
+          name: artifact
+
+      - name: Get url to upload to release from artifact
+        id: get_url
+        run: |
+          url=$(cat artifact/url.txt)
+          echo "##[set-output name=upload_url;]$url"
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.get_url.outputs.upload_url }}
           asset_path: ./reverse-proxy-${{ matrix.os }}.tar.gz
           asset_name: reverse-proxy-${{ matrix.os }}.tar.gz
           asset_content_type: application/zip
