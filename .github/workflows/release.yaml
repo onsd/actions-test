@@ -2,10 +2,10 @@ name: release binary
 
 on:
   push:
-    # tags:
-    #   - v*.*.*
-    branches:
-      - master
+    tags:
+      - v*.*.*
+    # branches:
+    #   - master
 
 
 jobs:
@@ -61,8 +61,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # tag_name: ${{ github.ref }}
-        tag_name: testtest
+        tag_name: ${{ github.ref }}
+        # tag_name: testtest
         release_name: Release ${{ github.ref }}
         draft: false
         prerelease: false
@@ -124,11 +124,3 @@ jobs:
           asset_path: ./reverse-proxy-${{ matrix.os }}.tar.gz
           asset_name: reverse-proxy-${{ matrix.os }}.tar.gz
           asset_content_type: application/zip
-
-      # - name: Upload to release
-      #   uses: JasonEtco/upload-to-release@master
-      #   with:
-      #     args: reverse-proxy-${{ matrix.os }}.tar.gz
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
